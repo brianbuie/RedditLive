@@ -16,7 +16,7 @@
 <div class="container">
 	<section id="content">
 
-	<h1 class="center">Gamethread</h1>
+	<h3 id="title" class="center">Thread</h3>
 
 	<?php if(!isset($_GET['url'])){ ?>
 
@@ -35,12 +35,22 @@
 
 	<?php } else { ?>
 
-
-	<pre>
 	<div id="thread" data-url="<?php echo $_GET['url']; ?>">
 
 	</div>
-	</pre>
+	<div id="stats">
+		<h5>Total: <span id="queue">0</span></h5>
+		<h5>Waiting: <span id="hiddenAmount">0</span></h5>
+		<h5>Process time: <span id="processTime">0</span></h5>
+		<h5>Delay: 
+			<span id="delay">
+				<?php if(isset($_GET['delay'])){ echo $_GET['delay']; } else { echo '0'; } ?>
+			</span> seconds
+		<button id="lessDelay"> - </button>
+		<button id="moreDelay"> + </button> </h5>
+
+
+	</div>
 
 	<?php } ?>
 

@@ -29,6 +29,35 @@ form{
 #thread{
 	height: 70vh;
 	overflow-y: scroll;
+	background-color: #ddd;
+}
+
+.comment{
+	padding: 15px;
+	margin: 10px;
+	background-color: #fff;
+	font-size: 16px;
+}
+
+.meta{
+	margin-bottom: 5px;
+	color: #111;
+	font-size: 12px;
+}
+
+.flair{
+	font-size: 10px;
+	color: #333;
+	margin-left: 10px;
+}
+
+.score{
+	margin-left: 15px;
+}
+
+a, a:hover{
+	text-decoration: none;
+	color: #111;
 }
 
 .hide{
