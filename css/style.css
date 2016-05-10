@@ -1,0 +1,36 @@
+@import url('loading.css');
+
+button:focus{
+	outline: none !important;
+}
+
+#content{
+	width: 100%;
+	max-width: 900px;
+	margin: 50px auto;
+}
+
+.center{
+	text-align: center;
+}
+
+#loader{
+
+}
+
+.input-group{
+	width: 100%;
+}
+
+form{
+	width: 100%;
+}
+
+#thread{
+	height: 70vh;
+	overflow-y: scroll;
+}
+
+.hide{
+	display: none;
+}
