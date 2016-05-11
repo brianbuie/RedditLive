@@ -2,6 +2,8 @@ var url = $('#thread').data('url');
 var delay = parseInt($('#delay').text());
 var queue = [];
 
+var filters = ['refs', 'ref', 'foul', 'call'];
+
 $(document).ready(function () {
 
 	if(url != undefined){	
@@ -48,18 +50,30 @@ function getComments(){
 						newComment = false;
 					}
 				});
+				var comment = this.data.body;
+				$.each(filters, function(){
+					if (comment.toLowerCase().indexOf(this) > 0){
+						// console.log('comment hidden (contains "' + this + '"): ' + comment);
+						newComment = false;
+					}
+				});
+				
 				if (newComment == true){
 					this.display = false;
 					this.timeReceived = Math.round(new Date().getTime()/1000);
 					this.displayTime = this.timeReceived + delay;
-					console.log(this);
+					// console.log(this);
 					queue.push(this);
 					var queueAmount = $(queue).size();
 				} 
-				if (newComment != true){
-					$('#'+this.data.id).children('.score').text(this.data.score);
-					// console.log(this.data.score);
-				}
+				// if (newComment != true){
+				// 	var selector = 'body #' + id + ' .score';
+				// 	var score = $(selector).text();
+				// 	if (this.data.score != score){
+				// 		$(selector).text(this.data.score).hide().fadeIn();
+				// 	}
+				// 	// console.log(this.data.score);
+				// }
 				$('#queue').text(queueAmount);
 				var hiddenAmount = 0;
 				$.each(queue, function(){
