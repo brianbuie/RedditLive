@@ -8,7 +8,6 @@ $(document).ready(function () {
 
 	if(url != undefined){	
 		getComments();
-		displayComments();
 	}
 
 	$('#lessDelay').on('click', function(){
@@ -62,7 +61,7 @@ function getComments(){
 					this.display = false;
 					this.timeReceived = Math.round(new Date().getTime()/1000);
 					this.displayTime = this.timeReceived + delay;
-					// console.log(this);
+					console.log(this);
 					queue.push(this);
 					var queueAmount = $(queue).size();
 				} 
@@ -89,14 +88,13 @@ function getComments(){
 		var totalTime = new Date().getTime()-ajaxTime;
   		var timeDif = totalTime.toString();
   		$('#processTime').html(timeDif + ' ms');
-		setTimeout(function(){ 
-			getComments();
-			}, 3000);
+		displayComments();
 	});
 }
 
 function displayComments(){
 	var curTime = Math.round(new Date().getTime()/1000);
+	var listTime= new Date().getTime();
 	$.each(queue, function(){
 		if (this.display == false){
 			if (this.displayTime < curTime){
@@ -113,7 +111,9 @@ function displayComments(){
 		}
 	});
 
-	setTimeout(function(){
-		displayComments();
-	}, 1000);
+	var totalTime = new Date().getTime()-listTime;
+	var timeDif = totalTime.toString();
+	$('#listCheck').html(timeDif + ' ms');
+
+	getComments();
 }

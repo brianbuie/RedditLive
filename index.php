@@ -41,7 +41,8 @@
 	<div id="stats">
 		<h5>Total: <span id="queue">0</span></h5>
 		<h5>Waiting: <span id="hiddenAmount">0</span></h5>
-		<h5>Process time: <span id="processTime">0</span></h5>
+		<h5>Request time: <span id="processTime">0</span></h5>
+		<h5>List check: <span id="listCheck">0</span></h5>
 		<h5>Delay: 
 			<span id="delay">
 				<?php if(isset($_GET['delay'])){ echo $_GET['delay']; } else { echo '0'; } ?>

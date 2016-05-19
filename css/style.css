@@ -63,3 +63,7 @@ a, a:hover{
 .hide{
 	display: none;
 }
+
+#content{
+	margin-top: 0;
+}
