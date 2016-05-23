@@ -67,3 +67,7 @@ a, a:hover{
 #content{
 	margin-top: 0;
 }
+
+.dark{
+	background-color: black;
+}

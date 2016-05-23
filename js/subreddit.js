@@ -1,9 +1,18 @@
 var url = $('#thread').data('url');
 var queue = [];
-
-var filters = ['refs', 'ref', 'foul', 'call'];
+var audioElement = document.createElement('audio');
 
 $(document).ready(function () {
+
+    audioElement.setAttribute('src', 'notification.mp3');
+    audioElement.setAttribute('autoplay', 'false');
+    //audioElement.load()
+
+    $.get();
+
+    audioElement.addEventListener("load", function() {
+        audioElement.play();
+    }, true);
 
 	if(url != undefined){
 		var title = $('#thread').data('name');
@@ -51,6 +60,10 @@ function getPosts(){
 			$('#queue').text(queueAmount);
 		});
 
+	}).error( function(){
+
+		$('#title').css('color: red;');
+
 	}).done( function(){
 		var totalTime = new Date().getTime()-ajaxTime;
   		var timeDif = totalTime.toString();
@@ -73,6 +86,7 @@ function displayPosts(){
 			html += '<div class="meta">' + this.data.author + '<span class="score">' + this.data.score + '</span> points <span class="comments">' + this.data.num_comments + '</span> comments</div></div></a>';
 			$('#thread').prepend(html);
 			$('#'+this.data.id).hide().fadeIn('slow');
+			audioElement.play();
 		}
 	});
 
