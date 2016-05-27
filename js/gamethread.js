@@ -61,7 +61,6 @@ function getComments(){
 					this.display = false;
 					this.timeReceived = Math.round(new Date().getTime()/1000);
 					this.displayTime = this.timeReceived + delay;
-					console.log(this);
 					queue.push(this);
 					var queueAmount = $(queue).size();
 				} 
@@ -105,8 +104,22 @@ function displayComments(){
 				html += '<div class="comment" id="' + this.data.id + '">';
 				html += '<div class="meta">' + this.data.author + '<span class="flair">' + flair + '</span>  <span class="score">' + this.data.score + '</span> points</div>';
 				html += this.data.body + '</div></a>';
+
+				var ajaxObj = $('#thread');
+				// var curPadTop = parseInt(ajaxObj.css('padding-top'));
+				// var curPadBot = parseInt(ajaxObj.css('padding-bottom'));
+				var curScrollTop = ajaxObj.scrollTop();
+				var curScrollHeight = ajaxObj.prop('scrollHeight');
+
 				$('#thread').prepend(html);
 				$('#'+this.data.id).hide().fadeIn('slow');
+
+				if(curScrollTop > 10){
+					var newScrollHeight = ajaxObj.prop('scrollHeight');
+					var heightDif = newScrollHeight - curScrollHeight;
+					var newPosition = curScrollTop + heightDif;
+					ajaxObj.scrollTop(newPosition);
+				}
 			}
 		}
 	});

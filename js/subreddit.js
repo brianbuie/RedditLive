@@ -94,5 +94,5 @@ function displayPosts(){
 	var timeDif = totalTime.toString();
 	$('#listCheck').html(timeDif + ' ms');
 
-	setTimeout( getPosts, 5000);
+	setTimeout( getPosts, 10000);
 }
