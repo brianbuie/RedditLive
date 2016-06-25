@@ -71,3 +71,7 @@ a, a:hover{
 .dark{
 	background-color: black;
 }
+
+.removed{
+	opacity: 0.5;
+}

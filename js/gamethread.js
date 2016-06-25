@@ -33,6 +33,12 @@ function getComments(){
 	$.ajax({
 		type	: "GET",
 		url		: url + '.json',
+
+	// var sendURL = url + '.json';
+	// $.ajax({
+	// 	type	: "POST",
+	// 	data	: { url : sendURL },
+	// 	url		: 'request.php'
 	}).success(function(data){
 		var title = data[0].data.children[0].data.title;
 		$('#title').text(title);

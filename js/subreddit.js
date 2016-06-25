@@ -37,27 +37,30 @@ function getPosts(){
 
 		// console.log(rawPosts);
 
+		$.each(queue, function(){
+			this.active = false;
+		});
+
 		$.each(rawPosts, function(){
 			var newPost = true;
 			var id = this.data.id;
 			$.each(queue, function(){
 				if (this.data.id == id){
 					newPost = false;
+					this.active = true;
 				}
 			});
 			var title = this.data.title;
 			
 			if (newPost == true){
 				this.display = false;
+				this.active = true;
 				console.log(this);
 				queue.push(this);
-				var queueAmount = $(queue).size();
 			} else {
 				$('html #post-' + id + ' .score').text(this.data.score);
 				$('html #post-' + id + ' .comments').text(this.data.num_comments);
 			}
-
-			$('#queue').text(queueAmount);
 		});
 
 	}).error( function(){
@@ -88,7 +91,18 @@ function displayPosts(){
 			$('#'+this.data.id).hide().fadeIn('slow');
 			audioElement.play();
 		}
+		if (this.active == false){
+			console.log(this.data.id+" removed");
+			$('#post-'+this.data.id).addClass('removed');
+		}
 	});
+
+	// queue = $.grep(queue, function(value) {
+	// 	return value.active != false;
+	// });
+
+	var queueAmount = $(queue).size();
+	$('#queue').text(queueAmount);
 
 	var totalTime = new Date().getTime()-listTime;
 	var timeDif = totalTime.toString();
