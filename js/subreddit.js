@@ -78,6 +78,7 @@ function getPosts(){
 function displayPosts(){
 	var curTime = Math.round(new Date().getTime()/1000);
 	var listTime= new Date().getTime();
+	var pageTitle = 'F5 Helper';
 	$.each(queue, function(){
 		if (this.display == false){
 			this.display = true;
@@ -95,6 +96,7 @@ function displayPosts(){
 			console.log(this.data.id+" removed");
 			$('#post-'+this.data.id).addClass('removed');
 		}
+		pageTitle = this.data.title;
 	});
 
 	// queue = $.grep(queue, function(value) {
@@ -107,6 +109,8 @@ function displayPosts(){
 	var totalTime = new Date().getTime()-listTime;
 	var timeDif = totalTime.toString();
 	$('#listCheck').html(timeDif + ' ms');
+
+	document.title = pageTitle;
 
 	setTimeout( getPosts, 10000);
 }
