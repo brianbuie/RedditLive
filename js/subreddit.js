@@ -41,6 +41,8 @@ function getPosts(){
 			this.active = false;
 		});
 
+		var counter = 0;
+
 		$.each(rawPosts, function(){
 			var newPost = true;
 			var id = this.data.id;
@@ -53,14 +55,20 @@ function getPosts(){
 			var title = this.data.title;
 			
 			if (newPost == true){
-				this.display = false;
-				this.active = true;
-				console.log(this);
-				queue.push(this);
+				if ($(queue).size() < 25 || counter > 10){
+					this.display = false;
+					this.active = true;
+					queue.push(this);
+				} else {
+					console.log('triggered by "' + this.data.title + '"');
+					console.log('queue size = ' + $(queue).size());
+					console.log('counter at ' + counter);
+				}
 			} else {
 				$('html #post-' + id + ' .score').text(this.data.score);
 				$('html #post-' + id + ' .comments').text(this.data.num_comments);
 			}
+			counter++;
 		});
 
 	}).error( function(){
@@ -93,7 +101,6 @@ function displayPosts(){
 			audioElement.play();
 		}
 		if (this.active == false){
-			console.log(this.data.id+" removed");
 			$('#post-'+this.data.id).addClass('removed');
 		}
 		pageTitle = this.data.title;

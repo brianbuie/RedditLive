@@ -73,5 +73,6 @@ a, a:hover{
 }
 
 .removed{
-	opacity: 0.5;
+	background-color: #ddd;
+	opacity: 0.4;
 }
