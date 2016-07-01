@@ -27,9 +27,18 @@ form{
 }
 
 #thread{
-	height: 70vh;
-	overflow-y: scroll;
+	/* height: 100vh; */
+	/* overflow-y: scroll; */
 	background-color: #ddd;
+	padding-top: 10px;
+	padding-bottom: 70px;
+}
+
+#stats{
+	position: fixed;
+	bottom: 0;
+	width: 100%;
+	background-color: white;
 }
 
 .comment{
@@ -90,4 +99,14 @@ a, a:hover{
 .removed{
 	background-color: #ddd;
 	opacity: 0.4;
+	padding: 5px 15px;
+	margin: 0 10px;
+}
+
+.removed .score-big, .removed .comments-big, .removed .meta{
+	display: none;
+}
+
+.removed h4{
+	font-size: 16px;
 }
