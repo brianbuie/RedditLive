@@ -1,5 +1,3 @@
-@import url('loading.css');
-
 button:focus{
 	outline: none !important;
 }

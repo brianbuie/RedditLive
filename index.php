@@ -7,7 +7,7 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title> </title>
-	<link href="<?echo BASE_URL;?>css/bootstrap.min.css" rel="stylesheet">
+	<link href="<?echo BASE_URL;?>css/vendor/bootstrap/bootstrap.min.css" rel="stylesheet">
 	<link rel="stylesheet" href="<?echo BASE_URL;?>css/style.css" type="text/css">
 
 </head>
@@ -88,7 +88,7 @@
 
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-<script src="<?echo BASE_URL;?>js/bootstrap.js"></script>
+<script src="<?echo BASE_URL;?>js/vendor/bootstrap/bootstrap.min.js"></script>
 <?php if(isset($_GET['url'])){ ?>
 	<script src="<?echo BASE_URL;?>js/gamethread.js" type="text/javascript" charset="utf-8"></script>
 <?php } elseif(isset($_GET['subreddit'])) { ?>
