@@ -63,11 +63,11 @@ form{
 	padding: 0;
 }
 
-.meta{
+/* .meta{
 	margin-bottom: 5px;
 	color: #111;
 	font-size: 12px;
-}
+} */
 
 .flair{
 	font-size: 10px;
@@ -108,5 +108,44 @@ a, a:hover{
 }
 
 .removed h4{
-	font-size: 16px;
+	font-size: 14px;
+}
+
+@media (max-width: 767px){
+
+	.container{
+		padding: 0;
+	}
+
+	.comment{
+		padding: 10px;
+	}
+
+	h4{
+		font-size: 16px;
+	}
+
+	.removed h4{
+		font-size: 12px;
+		margin-bottom: 0;
+	}
+
+	.score-big{
+		font-size: 24px;
+	}
+
+	.comments-big{
+		font-size: 12px;
+	}
+
+	.removed{
+		margin: 0 5px;
+	}
+
+	.comment.removed{
+		padding: 0 10px;
+	}
+
+
+
 }

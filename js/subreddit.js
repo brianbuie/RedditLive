@@ -97,7 +97,7 @@ function displayPosts(){
 			var html = '<a href="http://reddit.com' + this.data.permalink + '" target="_blank">';
 			html += '<div class="comment row" id="post-' + this.data.id + '"><div class="col-xs-1"><h1 class="score-big">' + this.data.score + '</h1><p class="comments-big">' + this.data.num_comments + '</p></div>';
 			html += '<div class="col-xs-11"><h4>' + this.data.title + '</h4>';
-			html += '<div class="meta">' + this.data.author + '<span class="score">' + this.data.score + '</span> points <span class="comments">' + this.data.num_comments + '</span> comments</div></div></div></a>';
+			html += '</div></div></a>';
 			$('#thread').prepend(html);
 			$('#'+this.data.id).hide().fadeIn('slow');
 			audioElement.play();
