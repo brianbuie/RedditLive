@@ -60,9 +60,9 @@ function getPosts(){
 					this.active = true;
 					queue.push(this);
 				} else {
-					console.log('triggered by "' + this.data.title + '"');
-					console.log('queue size = ' + $(queue).size());
-					console.log('counter at ' + counter);
+					// console.log('triggered by "' + this.data.title + '"');
+					// console.log('queue size = ' + $(queue).size());
+					// console.log('counter at ' + counter);
 				}
 			} else {
 				$('html #post-' + id + ' .score').text(this.data.score);
@@ -72,16 +72,16 @@ function getPosts(){
 			}
 			counter++;
 		});
-
-	}).error( function(){
-
-		$('#title').css('color: red;');
-
+		$('#thread').removeClass('error');
 	}).done( function(){
 		var totalTime = new Date().getTime()-ajaxTime;
   		var timeDif = totalTime.toString();
   		$('#processTime').html(timeDif + ' ms');
 		displayPosts();
+	}).fail( function(){
+		$('#thread').addClass('error');
+		console.log('failed!');
+		getPosts();
 	});
 }
 
