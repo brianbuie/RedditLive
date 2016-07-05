@@ -59,10 +59,6 @@ function getPosts(){
 					this.display = false;
 					this.active = true;
 					queue.push(this);
-				} else {
-					// console.log('triggered by "' + this.data.title + '"');
-					// console.log('queue size = ' + $(queue).size());
-					// console.log('counter at ' + counter);
 				}
 			} else {
 				$('html #post-' + id + ' .score').text(this.data.score);

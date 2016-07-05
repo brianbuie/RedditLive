@@ -94,6 +94,9 @@ function getComments(){
   		var timeDif = totalTime.toString();
   		$('#processTime').html(timeDif + ' ms');
 		displayComments();
+	}).fail( function(){
+		console.log('fail!');
+		// getComments();
 	});
 }
 
