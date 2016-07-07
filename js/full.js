@@ -1,5 +1,8 @@
-var url = $('#thread').data('url');
-var queue = [];
+var sub = $('#posts').data('sub');
+var blankPost = $('#commentsContainer').html();
+var posts = [];
+var comments = [];
+var activePost = "";
 var audioElement = document.createElement('audio');
 
 $(document).ready(function () {
@@ -8,51 +11,73 @@ $(document).ready(function () {
     audioElement.setAttribute('autoplay', 'false');
     //audioElement.load()
 
-    // $.get();
+    $.get();
 
     audioElement.addEventListener("load", function() {
         audioElement.play();
     }, true);
 
-	if(url != undefined){
-		var sub = $('#thread').data('name');
-		$('#title').text('r/' + sub + '/new');
+    $(document).on('click', '.postLink', function(){
+    	cleanUpShop();
+    	$(this).children('.post').addClass('active');
+    	activePost = $(this).children('.post').data('id');
+    });
 
-		getPosts();
-	}
+    $(document).on('click', '#removeActive', function(){
+    	cleanUpShop();
+    })
+
+    orchestrator();
 
 });
 
+function cleanUpShop(){
+	$('.post.active').removeClass('active');
+	activePost = "";
+	comments = [];
+	$('#commentsContainer').html(blankPost);
+}
 
-
-
+function orchestrator(){
+	if(sub != undefined){
+		getPosts();
+		displayPosts();
+	}
+	if(activePost != ""){
+		getComments();
+		displayComments();
+	}
+	setTimeout(orchestrator, 10000);
+}
 
 
 function getPosts(){
 	var ajaxTime= new Date().getTime();
-	reddit.new('nba').limit(25).fetch(function(data) {
+	$.ajax({
+		type	: "GET",
+		url		: "http://www.reddit.com/r/" + sub + '/new.json',
+	}).success(function(data){
 		var rawPosts = data.data.children;
 		rawPosts.reverse();
-		$.each(queue, function(){
+		$.each(posts, function(){
 			this.active = false;
 		});
 		var counter = 0;
 		$.each(rawPosts, function(){
 			var newPost = true;
 			var id = this.data.id;
-			$.each(queue, function(){
+			$.each(posts, function(){
 				if (this.data.id == id){
 					newPost = false;
 					this.active = true;
 				}
 			});
 			var title = this.data.title;
-			
 			if (newPost == true){
-				if ($(queue).size() <= 25 || counter > 10){
+				if ($(posts).size() < 25 || counter > 10){
 					this.display = false;
 					this.active = true;
-					queue.push(this);
+					posts.push(this);
 				}
 			} else {
 				$('html #post-' + id + ' .score').text(this.data.score);
@@ -62,35 +87,32 @@ function getPosts(){
 			}
 			counter++;
 		});
-		$('#thread').removeClass('error');
-	}, function(err){
-		$('#thread').addClass('error');
-		console.log('failed!');
-		getPosts();
+		$('#posts').removeClass('error');
+	}).done( function(){
+		var totalTime = new Date().getTime()-ajaxTime;
+  		var timeDif = totalTime.toString();
+  		$('#processTime').html(timeDif + ' ms');
+	}).fail( function(){
+		$('#posts').addClass('error');
 	});
-
-	var totalTime = new Date().getTime()-ajaxTime;
-	var timeDif = totalTime.toString();
-	$('#processTime').html(timeDif + ' ms');
-	displayPosts();
-
 }
 
 function displayPosts(){
 	var curTime = Math.round(new Date().getTime()/1000);
 	var listTime= new Date().getTime();
 	var pageTitle = 'F5 Helper';
-	$.each(queue, function(){
+	$.each(posts, function(){
 		if (this.display == false){
 			this.display = true;
 			var flair = this.data.author_flair_text;
 			if (flair == null){ flair = ''; }
-			var html = '<a href="http://reddit.com' + this.data.permalink + '" target="_blank">';
-			html += '<div class="comment row" id="post-' + this.data.id + '"><div class="col-xs-1"><h1 class="score-big">' + this.data.score + '</h1><p class="comments-big">' + this.data.num_comments + '</p></div>';
+			// var html = '<a href="http://reddit.com' + this.data.permalink + '" target="_blank">';
+			var html = '<a href="#" class="postLink">';
+			html += '<div class="post row" id="post-' + this.data.id + '" data-id="' + this.data.id + '"><div class="col-xs-1"><h1 class="score-big">' + this.data.score + '</h1><p class="comments-big">' + this.data.num_comments + '</p></div>';
 			html += '<div class="col-xs-11"><h4>' + this.data.title + '</h4>';
 			html += '</div></div></a>';
-			$('#thread').prepend(html);
-			$('#'+this.data.id).hide().fadeIn('fast');
+			$('#posts').prepend(html);
+			$('#'+this.data.id).hide().fadeIn('slow');
 			audioElement.play();
 		}
 		if (this.active == false){
@@ -98,19 +120,109 @@ function displayPosts(){
 		}
 		pageTitle = this.data.title;
 	});
-
-	// queue = $.grep(queue, function(value) {
-	// 	return value.active != false;
-	// });
-
-	var queueAmount = $(queue).size();
-	$('#queue').text(queueAmount);
-
+	var postsAmount = $(posts).size();
+	$('#postsAmount').text(postsAmount);
 	var totalTime = new Date().getTime()-listTime;
 	var timeDif = totalTime.toString();
 	$('#listCheck').html(timeDif + ' ms');
-
 	document.title = pageTitle;
+}
 
-	setTimeout( getPosts, 10000);
+function getComments(){
+	var ajaxTime= new Date().getTime();
+	$.ajax({
+		type	: "GET",
+		url		: "http://www.reddit.com/r/" + sub + '/comments/' + activePost + '.json?sort=new&depth=5',
+	}).success(function(data){
+		var postInfo = data[0].data.children[0].data;
+		var title = postInfo.title;
+		var content = postInfo.selftext;
+		var permalink = "http://www.reddit.com" + postInfo.permalink;
+		var titleHTML = '<a href="' + permalink + '" target="_blank">' + title + '</a>';
+		$('.activePost-title').html(titleHTML);
+		$('.activePost-content').text(content);
+
+		var rawComments = data[1].data.children;
+		rawComments.reverse();
+
+		$.each(rawComments, function(){
+			var newComment = true;
+			var id = this.data.id;
+			if (this.kind == 't1'){
+				$.each(comments, function(){
+					if (this.data.id == id){
+						newComment = false;
+					}
+				});
+				var comment = this.data.body;				
+				if (newComment == true){
+					this.display = false;
+					comments.push(this);
+					var commentsAmount = $(comments).size();
+				} else {
+					$('html #comment-' + id + '> .score-big').text(this.data.score);
+					$('html #comment-' + id + '> .body').text(this.data.body);
+				}
+				// $('#queue').text(queueAmount);
+				// var hiddenAmount = 0;
+				// $.each(comments, function(){
+				// 	if(this.display == false){
+				// 		hiddenAmount += 1;
+				// 	}
+				// });
+				// $('#hiddenAmount').text(hiddenAmount);
+			}
+		});
+
+	}).done( function(){
+		var totalTime = new Date().getTime()-ajaxTime;
+  // 		var timeDif = totalTime.toString();
+  // 		$('#processTime').html(timeDif + ' ms');
+		// displayComments();
+	}).fail( function(){
+		// console.log('fail!');
+		// getComments();
+	});
+}
+
+function displayComments(){
+	var curTime = Math.round(new Date().getTime()/1000);
+	var listTime= new Date().getTime();
+	$.each(comments, function(){
+		if (this.display == false){
+			this.display = true;
+			var ajaxObj = $('#comments');
+			var curScrollTop = ajaxObj.scrollTop();
+			var curScrollHeight = ajaxObj.prop('scrollHeight');
+			$('#comments').prepend(formatComment(this.data));
+			$('#comment-'+this.data.id).hide().fadeIn('slow');
+			if(curScrollTop > 10){
+				var newScrollHeight = ajaxObj.prop('scrollHeight');
+				var heightDif = newScrollHeight - curScrollHeight;
+				var newPosition = curScrollTop + heightDif;
+				ajaxObj.scrollTop(newPosition);
+			}
+			if(this.data.replies != ""){
+				var replySpot = $('#comment-'+this.data.id+'-replies');
+				// console.log(this.data.replies);
+				$.each(this.data.replies.data.children, function(){
+					$(replySpot).prepend(formatComment(this.data));
+				});
+			}
+		}
+	});
+
+	var totalTime = new Date().getTime()-listTime;
+	// var timeDif = totalTime.toString();
+	// $('#listCheck').html(timeDif + ' ms');
+}
+
+function formatComment(comment){
+	var flair = comment.author_flair_text;
+	if (flair == null){ flair = ''; }
+	var html = '<div class="comment row" id="comment-' + comment.id + '">';
+	html += '<div class="col-xs-1"><h1 class="score-big">' + comment.score + '</h1></div>';
+	html += '<div class="col-xs-11"><div class="meta"><b>' + comment.author + '</b><span class="flair">' + flair + '</span></div>';
+	html += '<div class="body">' + comment.body + '</div><div id="comment-' + comment.id + '-replies"></div></div></div></div>';
+	return html;
 }

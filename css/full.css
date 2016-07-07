@@ -1,0 +1,184 @@
+body{
+	background-color: #ddd;
+}
+
+button:focus{
+	outline: none !important;
+}
+
+/* #content{
+	width: 100%;
+	max-width: 900px;
+	margin: 50px auto;
+} */
+
+.center{
+	text-align: center;
+}
+
+.input-group{
+	width: 100%;
+}
+
+form{
+	width: 100%;
+}
+
+.container{
+	margin: 0;
+	padding: 0;
+	width: 98%;
+}
+
+
+
+
+
+
+#posts{
+	padding-top: 5px;
+	height: 100vh;
+	overflow-y: scroll;
+	/* padding-bottom: 70px; */
+}
+
+.post{
+	padding: 10px;
+	margin: 10px;
+	background-color: #fff;
+	font-size: 16px;
+}
+
+.post h1, .post p{
+	margin-top: 0;
+	padding-top: 0;
+	text-align: center;
+	margin-bottom: 0;
+}
+
+.post h4{
+	margin-top: 0;
+}
+
+.post .col-xs-1{
+	padding: 0;
+}
+
+.post.active{
+	background-color: #999;
+	color: #eee;
+}
+
+#removeActive{
+	position: absolute;
+	top: 0;
+	right: 0;
+}
+
+
+
+
+
+
+#commentsContainer{
+	height: 100vh;
+	overflow-y: scroll;
+	padding-bottom: 30px;
+}
+
+.comment{
+	padding: 5px;
+	margin: 10px;
+	background-color: #fff;
+}
+
+.flair{
+	font-size: 10px;
+	color: #333;
+	margin-left: 10px;
+}
+
+
+
+
+#posts.error, #comments.error{
+	border: 3px solid rgba(255,0,0, 0.5);
+}
+
+#stats{
+	position: fixed;
+	bottom: 0;
+	width: 100%;
+	background-color: white;
+}
+
+#stats h5{
+	display: inline-block;
+	margin-right: 15px;
+}
+
+.comment h1, .comment p{
+	margin-top: 0;
+	padding-top: 0;
+	text-align: center;
+	margin-bottom: 0;
+}
+
+.comment h4{
+	margin-top: 0;
+}
+
+.comment .col-xs-1{
+	padding: 0;
+}
+
+/* .meta{
+	margin-bottom: 5px;
+	color: #111;
+	font-size: 12px;
+} */
+
+.score, .comments{
+	margin-left: 15px;
+}
+
+a, a:hover{
+	text-decoration: none;
+	color: #111;
+}
+
+.hide{
+	display: none;
+}
+
+#content{
+	margin-top: 0;
+}
+
+h4{
+	font-size: 16px;
+}
+
+.removed{
+	background-color: #ddd;
+	opacity: 0.4;
+	padding: 5px 15px;
+	margin: 0 5px;
+}
+
+.removed .score-big, .removed .comments-big, .removed .meta{
+	display: none;
+}
+
+.removed h4{
+	font-size: 12px;
+	margin-bottom: 0;
+}
+
+.score-big{
+	font-size: 24px;
+}
+
+.comments-big{
+	font-size: 12px;
+}
