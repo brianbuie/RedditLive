@@ -21,6 +21,13 @@ $(document).ready(function () {
     	cleanUpShop();
     	$(this).children('.post').addClass('active');
     	activePost = $(this).children('.post').data('id');
+    	$.each(posts, function(){
+    		if(this.data.id == activePost){
+    			$('.activePost-title .link').attr('href', "http://www.reddit.com" + this.data.permalink);
+				$('.activePost-title .title').text(this.data.title);
+				$('.activePost-content').text(this.data.selftext);
+    		}
+    	});
     });
 
     $(document).on('click', '#removeActive', function(){
@@ -136,11 +143,11 @@ function getComments(){
 	}).success(function(data){
 		var postInfo = data[0].data.children[0].data;
 		var title = postInfo.title;
-		var content = postInfo.selftext;
 		var permalink = "http://www.reddit.com" + postInfo.permalink;
-		var titleHTML = '<a href="' + permalink + '" target="_blank">' + title + '</a>';
-		$('.activePost-title').html(titleHTML);
-		$('.activePost-content').text(content);
+		// var titleHTML = '<a href="' + permalink + '" target="_blank">' + title + '</a>';
+		$('.activePost-title .link').attr('href', "http://www.reddit.com" + postInfo.permalink);
+		$('.activePost-title .title').text(postInfo.title);
+		$('.activePost-content').text(postInfo.selftext);
 
 		var rawComments = data[1].data.children;
 		rawComments.reverse();
@@ -160,8 +167,8 @@ function getComments(){
 					comments.push(this);
 					var commentsAmount = $(comments).size();
 				} else {
-					$('html #comment-' + id + '> .score-big').text(this.data.score);
-					$('html #comment-' + id + '> .body').text(this.data.body);
+					$('html #score-' + id).text(this.data.score);
+					$('html #body-' + id).text(this.data.body);
 				}
 				// $('#queue').text(queueAmount);
 				// var hiddenAmount = 0;
@@ -221,8 +228,8 @@ function formatComment(comment){
 	var flair = comment.author_flair_text;
 	if (flair == null){ flair = ''; }
 	var html = '<div class="comment row" id="comment-' + comment.id + '">';
-	html += '<div class="col-xs-1"><h1 class="score-big">' + comment.score + '</h1></div>';
+	html += '<div class="col-xs-1"><h1 id="score-' + comment.id + '" class="score-big">' + comment.score + '</h1></div>';
 	html += '<div class="col-xs-11"><div class="meta"><b>' + comment.author + '</b><span class="flair">' + flair + '</span></div>';
-	html += '<div class="body">' + comment.body + '</div><div id="comment-' + comment.id + '-replies"></div></div></div></div>';
+	html += '<div class="body" id="body-' + comment.id + '">' + comment.body + '</div><div id="comment-' + comment.id + '-replies"></div></div></div></div>';
 	return html;
 }

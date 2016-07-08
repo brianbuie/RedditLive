@@ -40,7 +40,7 @@
 				</div>
 				<div class="col-sm-7" id="commentsContainer">
 					<a href="#" id="removeActive">X</a>
-					<h3 class="activePost-title">No post selected</h3>
+					<h3 class="activePost-title"><a href="#" target="_blank" class="link"><span class="title">No post selected</span></a></h3>
 					<p class="activePost-content">Select a post to begin</p>
 					<div id="comments">
 					</div>
