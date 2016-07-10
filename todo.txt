@@ -3,11 +3,7 @@ TODO
 remove all php
 	make subreddit selection all front-end
 
-improve comment ajax time
-
 add loading animation to posts and comments
-
-add stoptimeout on getcomments when switching threads
 
 fix reply spacing
 

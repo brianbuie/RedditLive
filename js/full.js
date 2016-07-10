@@ -10,8 +10,6 @@ $(document).ready(function () {
 
     audioElement.setAttribute('src', 'notification.mp3');
     audioElement.setAttribute('autoplay', 'false');
-    //audioElement.load()
-
     $.get();
 
     audioElement.addEventListener("load", function() {
@@ -29,6 +27,7 @@ $(document).ready(function () {
 				$('.activePost-content').text(this.data.selftext);
     		}
     	});
+    	getComments();
     });
 
     $(document).on('click', '#removeActive', function(){
@@ -113,7 +112,6 @@ function displayPosts(){
 			this.display = true;
 			var flair = this.data.author_flair_text;
 			if (flair == null){ flair = ''; }
-			// var html = '<a href="http://reddit.com' + this.data.permalink + '" target="_blank">';
 			var html = '<a href="#" class="postLink">';
 			html += '<div class="post row" id="post-' + this.data.id + '" data-id="' + this.data.id + '"><div class="col-xs-1"><h1 class="score-big">' + this.data.score + '</h1><p class="comments-big">' + this.data.num_comments + '</p></div>';
 			html += '<div class="col-xs-11"><h4>' + this.data.title + '</h4>';
@@ -144,14 +142,11 @@ function getComments(){
 		var postInfo = data[0].data.children[0].data;
 		var title = postInfo.title;
 		var permalink = "http://www.reddit.com" + postInfo.permalink;
-		// var titleHTML = '<a href="' + permalink + '" target="_blank">' + title + '</a>';
 		$('.activePost-title .link').attr('href', "http://www.reddit.com" + postInfo.permalink);
 		$('.activePost-title .title').text(postInfo.title);
 		$('.activePost-content').text(postInfo.selftext);
-
 		var rawComments = data[1].data.children;
 		rawComments.reverse();
-
 		$.each(rawComments, function(){
 			var newComment = true;
 			var id = this.data.id;
@@ -170,25 +165,15 @@ function getComments(){
 					$('html #score-' + id).text(this.data.score);
 					$('html #body-' + id).text(this.data.body);
 				}
-				// $('#queue').text(queueAmount);
-				// var hiddenAmount = 0;
-				// $.each(comments, function(){
-				// 	if(this.display == false){
-				// 		hiddenAmount += 1;
-				// 	}
-				// });
-				// $('#hiddenAmount').text(hiddenAmount);
 			}
 		});
-
+		if(postInfo.id == activePost){
+			displayComments();
+		}
 	}).done( function(){
 		var totalTime = new Date().getTime()-ajaxTime;
-  // 		var timeDif = totalTime.toString();
-  // 		$('#processTime').html(timeDif + ' ms');
-		displayComments();
 	}).fail( function(){
-		// console.log('fail!');
-		// getComments();
+		$('#commentsContainer').addClass('error');
 	});
 }
 
@@ -211,17 +196,13 @@ function displayComments(){
 			}
 			if(this.data.replies != ""){
 				var replySpot = $('#comment-'+this.data.id+'-replies');
-				// console.log(this.data.replies);
 				$.each(this.data.replies.data.children, function(){
 					$(replySpot).append(formatComment(this.data));
 				});
 			}
 		}
 	});
-
 	var totalTime = new Date().getTime()-listTime;
-	// var timeDif = totalTime.toString();
-	// $('#listCheck').html(timeDif + ' ms');
 }
 
 function formatComment(comment){
