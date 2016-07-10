@@ -2,6 +2,7 @@ var sub = $('#posts').data('sub');
 var blankPost = $('#commentsContainer').html();
 var posts = [];
 var comments = [];
+var commentsSort = "top";
 var activePost = "";
 var audioElement = document.createElement('audio');
 
@@ -139,7 +140,7 @@ function getComments(){
 	var ajaxTime= new Date().getTime();
 	$.ajax({
 		type	: "GET",
-		url		: "http://www.reddit.com/r/" + sub + '/comments/' + activePost + '.json?sort=new&depth=5',
+		url		: "http://www.reddit.com/r/" + sub + '/comments/' + activePost + '.json?sort=' + commentsSort + '&depth=5',
 	}).success(function(data){
 		var postInfo = data[0].data.children[0].data;
 		var title = postInfo.title;
@@ -213,7 +214,7 @@ function displayComments(){
 				var replySpot = $('#comment-'+this.data.id+'-replies');
 				// console.log(this.data.replies);
 				$.each(this.data.replies.data.children, function(){
-					$(replySpot).prepend(formatComment(this.data));
+					$(replySpot).append(formatComment(this.data));
 				});
 			}
 		}
