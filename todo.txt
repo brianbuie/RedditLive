@@ -3,7 +3,7 @@ TODO
 remove all php
 	make subreddit selection all front-end
 
-figure out why ajax takes forever
+improve comment ajax time
 
 add loading animation to posts and comments
 

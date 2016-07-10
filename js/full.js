@@ -48,12 +48,10 @@ function cleanUpShop(){
 
 function orchestrator(){
 	if(sub != undefined){
-		getPosts();
-		displayPosts();
+		getPosts();	
 	}
 	if(activePost != ""){
 		getComments();
-		displayComments();
 	}
 	setTimeout(orchestrator, 10000);
 }
@@ -100,6 +98,7 @@ function getPosts(){
 		var totalTime = new Date().getTime()-ajaxTime;
   		var timeDif = totalTime.toString();
   		$('#processTime').html(timeDif + ' ms');
+  		displayPosts();
 	}).fail( function(){
 		$('#posts').addClass('error');
 	});
@@ -186,7 +185,7 @@ function getComments(){
 		var totalTime = new Date().getTime()-ajaxTime;
   // 		var timeDif = totalTime.toString();
   // 		$('#processTime').html(timeDif + ' ms');
-		// displayComments();
+		displayComments();
 	}).fail( function(){
 		// console.log('fail!');
 		// getComments();
