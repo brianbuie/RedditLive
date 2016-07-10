@@ -191,16 +191,11 @@ function displayComments(){
 				var newPosition = curScrollTop + heightDif;
 				ajaxObj.scrollTop(newPosition);
 			}
-			if(this.data.replies != ""){
-				var replySpot = $('#comment-'+this.data.id+'-replies');
-				$.each(this.data.replies.data.children, function(){
-					$(replySpot).append(formatComment(this.data));
-				});
-			}
 		} else {
 			$('html #score-' + this.data.id).text(this.data.score);
 			$('html #body-' + this.data.id).text(this.data.body);
 		}
+		displayReplies(this.data);
 	});
 	var totalTime = new Date().getTime()-listTime;
 }
@@ -213,4 +208,15 @@ function formatComment(comment){
 	html += '<div class="col-xs-11"><div class="meta"><b>' + comment.author + '</b><span class="flair">' + flair + '</span></div>';
 	html += '<div class="body" id="body-' + comment.id + '">' + comment.body + '</div><div id="comment-' + comment.id + '-replies"></div></div></div></div>';
 	return html;
+}
+
+function displayReplies(comment){
+	if(comment.replies !== "" && comment.replies != undefined){
+		var replySpot = $('#comment-'+comment.id+'-replies');
+		$('#comment-'+comment.id+'-replies').html("");
+		$.each(comment.replies.data.children, function(){
+			$(replySpot).append(formatComment(this.data));
+			displayReplies(this.data);
+		});
+	}
 }

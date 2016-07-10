@@ -7,9 +7,6 @@ add loading animation to posts and comments
 
 fix reply spacing
 
-add reply loop to get/display replies
-	fix reply score/body updating
-
 create settings modal
 	comment delay
 	min score threshold on posts
