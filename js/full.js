@@ -145,6 +145,8 @@ function getComments(){
 		if(postInfo.id == activePost){
 			$('.activePost-title .link').attr('href', "http://www.reddit.com" + postInfo.permalink);
 			$('.activePost-title .title').text(postInfo.title);
+			$('#OP').text(postInfo.author);
+			$('#OP-flair').text(flairHelper(postInfo.author_flair_text));
 			$('.activePost-content').text(postInfo.selftext);
 			var rawComments = data[1].data.children;
 			rawComments.reverse();
@@ -201,11 +203,9 @@ function displayComments(){
 }
 
 function formatComment(comment){
-	var flair = comment.author_flair_text;
-	if (flair == null){ flair = ''; }
 	var html = '<div class="comment row" id="comment-' + comment.id + '">';
 	html += '<div class="col-xs-1"><h1 id="score-' + comment.id + '" class="score-big">' + comment.score + '</h1></div>';
-	html += '<div class="col-xs-11"><div class="meta"><b>' + comment.author + '</b><span class="flair">' + flair + '</span></div>';
+	html += '<div class="col-xs-11"><div class="meta"><b>' + comment.author + '</b><span class="flair">' + flairHelper(comment.author_flair_text) + '</span></div>';
 	html += '<div class="body" id="body-' + comment.id + '">' + comment.body + '</div><div id="comment-' + comment.id + '-replies"></div></div></div></div>';
 	return html;
 }
@@ -219,4 +219,9 @@ function displayReplies(comment){
 			displayReplies(this.data);
 		});
 	}
+}
+
+function flairHelper(flair){
+	if(flair == null){ flair = ''; }
+	return flair;
 }
