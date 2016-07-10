@@ -71,10 +71,14 @@ function getPosts(){
 		$.each(rawPosts, function(){
 			var newPost = true;
 			var id = this.data.id;
+			var thisScore = this.data.score;
+			var thisComments = this.data.num_comments;
 			$.each(posts, function(){
 				if (this.data.id == id){
 					newPost = false;
 					this.active = true;
+					this.data.score = thisScore;
+					this.data.num_comments = thisComments;
 				}
 			});
 			var title = this.data.title;
@@ -84,11 +88,6 @@ function getPosts(){
 					this.active = true;
 					posts.push(this);
 				}
-			} else {
-				$('html #post-' + id + ' .score').text(this.data.score);
-				$('html #post-' + id + ' .score-big').text(this.data.score);
-				$('html #post-' + id + ' .comments').text(this.data.num_comments);
-				$('html #post-' + id + ' .comments-big').text(this.data.num_comments);
 			}
 			counter++;
 		});
@@ -119,6 +118,9 @@ function displayPosts(){
 			$('#posts').prepend(html);
 			$('#'+this.data.id).hide().fadeIn('slow');
 			audioElement.play();
+		} else {
+			$('html #post-' + this.data.id + ' .score-big').text(this.data.score);
+			$('html #post-' + this.data.id + ' .comments-big').text(this.data.num_comments);
 		}
 		if (this.active == false){
 			$('#post-'+this.data.id).addClass('removed');
@@ -140,34 +142,29 @@ function getComments(){
 		url		: "http://www.reddit.com/r/" + sub + '/comments/' + activePost + '.json?sort=' + commentsSort + '&depth=5',
 	}).success(function(data){
 		var postInfo = data[0].data.children[0].data;
-		var title = postInfo.title;
-		var permalink = "http://www.reddit.com" + postInfo.permalink;
-		$('.activePost-title .link').attr('href', "http://www.reddit.com" + postInfo.permalink);
-		$('.activePost-title .title').text(postInfo.title);
-		$('.activePost-content').text(postInfo.selftext);
-		var rawComments = data[1].data.children;
-		rawComments.reverse();
-		$.each(rawComments, function(){
-			var newComment = true;
-			var id = this.data.id;
-			if (this.kind == 't1'){
-				$.each(comments, function(){
-					if (this.data.id == id){
-						newComment = false;
-					}
-				});
-				var comment = this.data.body;				
-				if (newComment == true){
-					this.display = false;
-					comments.push(this);
-					var commentsAmount = $(comments).size();
-				} else {
-					$('html #score-' + id).text(this.data.score);
-					$('html #body-' + id).text(this.data.body);
-				}
-			}
-		});
 		if(postInfo.id == activePost){
+			$('.activePost-title .link').attr('href', "http://www.reddit.com" + postInfo.permalink);
+			$('.activePost-title .title').text(postInfo.title);
+			$('.activePost-content').text(postInfo.selftext);
+			var rawComments = data[1].data.children;
+			rawComments.reverse();
+			$.each(rawComments, function(){
+				var newComment = true;
+				var thisComment = this;
+				if (this.kind == 't1'){
+					$.each(comments, function(index){
+						if (this.data.id == thisComment.data.id){
+							newComment = false;
+							comments[index] = thisComment;
+						}
+					});				
+					if (newComment == true){
+						this.display = false;
+						comments.push(this);
+						var commentsAmount = $(comments).size();
+					}
+				}
+			});
 			displayComments();
 		}
 	}).done( function(){
@@ -200,6 +197,9 @@ function displayComments(){
 					$(replySpot).append(formatComment(this.data));
 				});
 			}
+		} else {
+			$('html #score-' + this.data.id).text(this.data.score);
+			$('html #body-' + this.data.id).text(this.data.body);
 		}
 	});
 	var totalTime = new Date().getTime()-listTime;
