@@ -5,8 +5,6 @@ remove all php
 
 add loading animation to posts and comments
 
-fix reply spacing
-
 create settings modal
 	comment delay
 	min score threshold on posts

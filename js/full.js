@@ -4,6 +4,7 @@ var posts = [];
 var comments = [];
 var commentsSort = "top";
 var activePost = "";
+var OP = "";
 var audioElement = document.createElement('audio');
 
 $(document).ready(function () {
@@ -146,6 +147,7 @@ function getComments(){
 			$('.activePost-title .link').attr('href', "http://www.reddit.com" + postInfo.permalink);
 			$('.activePost-title .title').text(postInfo.title);
 			$('#OP').text(postInfo.author);
+			OP = postInfo.author;
 			$('#OP-flair').text(flairHelper(postInfo.author_flair_text));
 			$('.activePost-content').text(postInfo.selftext);
 			var rawComments = data[1].data.children;
@@ -203,9 +205,12 @@ function displayComments(){
 }
 
 function formatComment(comment){
+	var authorClass = "";
+	if(comment.author == OP){ authorClass = "label label-primary"; }
 	var html = '<div class="comment row" id="comment-' + comment.id + '">';
-	html += '<div class="col-xs-1"><h1 id="score-' + comment.id + '" class="score-big">' + comment.score + '</h1></div>';
-	html += '<div class="col-xs-11"><div class="meta"><b>' + comment.author + '</b><span class="flair">' + flairHelper(comment.author_flair_text) + '</span></div>';
+	html += '<div class="media-left"><h1 id="score-' + comment.id + '" class="score-big">' + comment.score + '</h1></div>';
+	html += '<div class="media-body"><div class="meta">';
+	html += '<b class="' + authorClass + '">' + comment.author + '</b><span class="flair">' + flairHelper(comment.author_flair_text) + '</span></div>';
 	html += '<div class="body" id="body-' + comment.id + '">' + comment.body + '</div><div id="comment-' + comment.id + '-replies"></div></div></div></div>';
 	return html;
 }
@@ -215,8 +220,10 @@ function displayReplies(comment){
 		var replySpot = $('#comment-'+comment.id+'-replies');
 		$('#comment-'+comment.id+'-replies').html("");
 		$.each(comment.replies.data.children, function(){
-			$(replySpot).append(formatComment(this.data));
-			displayReplies(this.data);
+			if(this.data.author){
+				$(replySpot).append(formatComment(this.data));
+				displayReplies(this.data);
+			}
 		});
 	}
 }

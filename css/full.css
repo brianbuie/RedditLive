@@ -69,6 +69,22 @@ form{
 	color: #eee;
 }
 
+.removed{
+	background-color: #ddd;
+	opacity: 0.4;
+	padding: 5px 15px;
+	margin: 0 5px;
+}
+
+.removed .score-big, .removed .comments-big, .removed .meta{
+	display: none;
+}
+
+.removed h4{
+	font-size: 12px;
+	margin-bottom: 0;
+}
+
 #removeActive{
 	position: absolute;
 	top: 0;
@@ -86,10 +102,19 @@ form{
 	padding-bottom: 30px;
 }
 
+#commentsContainer .activePost-title{
+	margin-bottom: 0;
+}
+
+#commentsContainer > .meta{
+	margin-bottom: 10px;
+}
+
 .comment{
 	padding: 5px;
 	margin: 10px;
 	background-color: #fff;
+	border-left: 2px solid #ccc;
 }
 
 .flair{
@@ -98,12 +123,14 @@ form{
 	margin-left: 10px;
 }
 
-
-
-
 #posts.error, #comments.error{
 	border: 3px solid rgba(255,0,0, 0.5);
 }
+
+
+
+
+
 
 #stats{
 	position: fixed;
@@ -116,6 +143,11 @@ form{
 	display: inline-block;
 	margin-right: 15px;
 }
+
+
+
+
+
 
 .comment h1, .comment p{
 	margin-top: 0;
@@ -159,21 +191,7 @@ h4{
 	font-size: 16px;
 }
 
-.removed{
-	background-color: #ddd;
-	opacity: 0.4;
-	padding: 5px 15px;
-	margin: 0 5px;
-}
 
-.removed .score-big, .removed .comments-big, .removed .meta{
-	display: none;
-}
-
-.removed h4{
-	font-size: 12px;
-	margin-bottom: 0;
-}
 
 .score-big{
 	font-size: 24px;

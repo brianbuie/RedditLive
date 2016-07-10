@@ -41,7 +41,7 @@
 				<div class="col-sm-7" id="commentsContainer">
 					<a href="#" id="removeActive">X</a>
 					<h3 class="activePost-title"><a href="#" target="_blank" class="link"><span class="title">No post selected</span></a></h3>
-					<div class="meta"><b id="OP"></b><span id="OP-flair" class="flair"></span></div>
+					<div class="meta">posted by <b id="OP"></b><span id="OP-flair" class="flair"></span></div>
 					<p class="activePost-content"></p>
 					<div id="comments">
 					</div>
