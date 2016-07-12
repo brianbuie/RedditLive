@@ -1,4 +1,4 @@
-var sub = $('#posts').data('sub');
+var sub = '';
 var blankPost = $('#commentsContainer').html();
 var posts = [];
 var comments = [];
@@ -17,7 +17,16 @@ $(document).ready(function () {
         audioElement.play();
     }, true);
 
-    $(document).on('click', '.postLink', function(){
+    $('html form').on('submit', function(e){
+    	e.preventDefault();
+    	sub = $('input').val();
+		$('input').val('');
+		$('#content').removeClass('notReady').addClass('ready');
+		orchestrator();
+    });
+
+    $(document).on('click', '.postLink', function(e){
+    	e.preventDefault();
     	cleanUpShop();
     	$(this).children('.post').addClass('active');
     	activePost = $(this).children('.post').data('id');
@@ -31,11 +40,10 @@ $(document).ready(function () {
     	getComments();
     });
 
-    $(document).on('click', '#removeActive', function(){
+    $(document).on('click', '#removeActive', function(e){
+    	e.preventDefault();
     	cleanUpShop();
-    })
-
-    orchestrator();
+    });
 
 });
 
@@ -47,7 +55,7 @@ function cleanUpShop(){
 }
 
 function orchestrator(){
-	if(sub != undefined){
+	if(sub != ''){
 		getPosts();	
 	}
 	if(activePost != ""){

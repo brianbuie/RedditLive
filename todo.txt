@@ -1,8 +1,5 @@
 TODO
 
-remove all php
-	make subreddit selection all front-end
-
 add loading animation to posts and comments
 
 create settings modal

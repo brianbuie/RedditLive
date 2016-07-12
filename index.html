@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title> </title>
+	<link href="css/vendor/bootstrap/bootstrap.min.css" rel="stylesheet" type="text/css">
+	<link href="css/full.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+<div class="container">
+	<section id="content" class="notReady">
+		<h3 id="title" class="center notReady">Subreddit</h3>
+		<div class="row notReady">
+			<div class="col-lg-8 col-lg-offset-2">
+				<div class="input-group">
+					<form class="form-inline input-group">
+						<input type="text" class="form-control" name="sub" placeholder="Subreddit" />
+						<span class="input-group-btn">
+							<button class="btn btn-default" type="submit">Go!</button>
+						</span>
+					</form>
+				</div>
+			</div>
+		</div>
+
+		<div class="row ready">
+			<div class="col-sm-5">
+				<div id="posts" data-sub=""></div>
+			</div>
+			<div class="col-sm-7" id="commentsContainer">
+				<a href="#" id="removeActive">X</a>
+				<h3 class="activePost-title"><a href="#" target="_blank" class="link"><span class="title">No post selected</span></a></h3>
+				<div class="meta">posted by <b id="OP"></b><span id="OP-flair" class="flair"></span></div>
+				<p class="activePost-content"></p>
+				<div id="comments">
+				</div>
+			</div>
+		</div>
+
+		<div id="stats" class="ready">
+			<h5>Total: <span id="postsAmount">0</span></h5>
+			<h5>Request time: <span id="processTime">0</span></h5>
+			<h5>List check: <span id="listCheck">0</span></h5>
+		</div>
+
+	</section>
+
+</div>
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+	<script src="js/vendor/bootstrap/bootstrap.min.js"></script>
+	<script src="js/full.js" type="text/javascript" charset="utf-8"></script>
+
+</body>
+</html>

@@ -30,7 +30,13 @@ form{
 	width: 98%;
 }
 
+.notReady .ready{
+	display: none;
+}
 
+.ready .notReady{
+	display: none;
+}
 
 
 
