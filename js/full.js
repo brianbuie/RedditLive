@@ -34,7 +34,7 @@ $(document).ready(function () {
     		if(this.data.id == activePost){
     			$('.activePost-title .link').attr('href', "http://www.reddit.com" + this.data.permalink);
 				$('.activePost-title .title').text(this.data.title);
-				$('.activePost-content').text(this.data.selftext);
+				$('.activePost-content').html(this.data.selftext_html);
     		}
     	});
     	getComments();
@@ -157,7 +157,7 @@ function getComments(){
 			$('#OP').text(postInfo.author);
 			OP = postInfo.author;
 			$('#OP-flair').text(flairHelper(postInfo.author_flair_text));
-			$('.activePost-content').text(postInfo.selftext);
+			$('.activePost-content').html(unescapeHTML(postInfo.selftext_html));
 			var rawComments = data[1].data.children;
 			rawComments.reverse();
 			$.each(rawComments, function(){
@@ -205,7 +205,7 @@ function displayComments(){
 			}
 		} else {
 			$('html #score-' + this.data.id).text(this.data.score);
-			$('html #body-' + this.data.id).text(this.data.body);
+			$('html #body-' + this.data.id).html(unescapeHTML(this.data.body_html));
 		}
 		displayReplies(this.data);
 	});
@@ -219,17 +219,28 @@ function formatComment(comment){
 	html += '<div class="media-left"><h1 id="score-' + comment.id + '" class="score-big">' + comment.score + '</h1></div>';
 	html += '<div class="media-body"><div class="meta">';
 	html += '<b class="' + authorClass + '">' + comment.author + '</b><span class="flair">' + flairHelper(comment.author_flair_text) + '</span></div>';
-	html += '<div class="body" id="body-' + comment.id + '">' + comment.body + '</div><div id="comment-' + comment.id + '-replies"></div></div></div></div>';
+	html += '<div class="body" id="body-' + comment.id + '">' + unescapeHTML(comment.body_html) + '</div><div id="comment-' + comment.id + '-replies"></div></div></div></div>';
 	return html;
+}
+
+function unescapeHTML(body){
+	$("#formatZone").html(body);
+	var newBody = $("#formatZone").text();
+	return newBody;
 }
 
 function displayReplies(comment){
 	if(comment.replies !== "" && comment.replies != undefined){
 		var replySpot = $('#comment-'+comment.id+'-replies');
-		$('#comment-'+comment.id+'-replies').html("");
+		// $('#comment-'+comment.id+'-replies').html("");
 		$.each(comment.replies.data.children, function(){
 			if(this.data.author){
-				$(replySpot).append(formatComment(this.data));
+				if($('#comment-'+this.data.id).length < 1){
+					$(replySpot).append(formatComment(this.data));
+				} else {
+					$('html #score-' + this.data.id).text(this.data.score);
+					$('html #body-' + this.data.id).html(unescapeHTML(this.data.body_html));
+				}
 				displayReplies(this.data);
 			}
 		});
