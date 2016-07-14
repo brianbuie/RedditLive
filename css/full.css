@@ -92,11 +92,21 @@ form{
 }
 
 #removeActive{
-	position: absolute;
-	top: 0;
-	right: 0;
+	opacity: 0.4;
 }
 
+#settingsButton{
+	position: fixed;
+	bottom: 5px;
+	right: 0;
+	z-index: 999;
+}
+
+a:focus{
+	outline: none;
+	text-decoration: none;
+	color: inherit;
+}
 
 
 

@@ -17,13 +17,17 @@ $(document).ready(function () {
         audioElement.play();
     }, true);
 
-    $('html form').on('submit', function(e){
+    $('html #subSelect').on('submit', function(e){
     	e.preventDefault();
     	sub = $('input').val();
 		$('input').val('');
 		$('#content').removeClass('notReady').addClass('ready');
 		orchestrator();
     });
+
+    $('html #settingsForm').on('submit', function(e){
+    	e.preventDefault();
+    })
 
     $(document).on('click', '.postLink', function(e){
     	e.preventDefault();
@@ -35,6 +39,8 @@ $(document).ready(function () {
     			$('.activePost-title .link').attr('href', "http://www.reddit.com" + this.data.permalink);
 				$('.activePost-title .title').text(this.data.title);
 				$('.activePost-content').html(this.data.selftext_html);
+				$('#removeActive').removeClass('hidden');
+				$('.meta').removeClass('hidden');
     		}
     	});
     	getComments();
