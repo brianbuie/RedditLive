@@ -9,14 +9,6 @@ var audioElement = document.createElement('audio');
 
 $(document).ready(function () {
 
-    audioElement.setAttribute('src', 'notification.mp3');
-    audioElement.setAttribute('autoplay', 'false');
-    $.get();
-
-    audioElement.addEventListener("load", function() {
-        audioElement.play();
-    }, true);
-
     $('html #subSelect').on('submit', function(e){
     	e.preventDefault();
     	sub = $('input').val();
@@ -132,7 +124,7 @@ function displayPosts(){
 			html += '</div></div></a>';
 			$('#posts').prepend(html);
 			$('#'+this.data.id).hide().fadeIn('slow');
-			audioElement.play();
+			playSound();
 		} else {
 			$('html #post-' + this.data.id + ' .score-big').text(this.data.score);
 			$('html #post-' + this.data.id + ' .comments-big').text(this.data.num_comments);
@@ -256,4 +248,14 @@ function displayReplies(comment){
 function flairHelper(flair){
 	if(flair == null){ flair = ''; }
 	return flair;
+}
+
+function playSound(){
+	// todo: check settings to see if sound is enabled
+	if (!audioElement.src){
+		audioElement.setAttribute('src', 'media/notification.mp3');
+    	audioElement.setAttribute('autoplay', 'false');
+	} else {
+		audioElement.play();
+	}
 }
