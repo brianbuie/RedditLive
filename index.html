@@ -13,9 +13,12 @@
 <body>
 <div class="container">
 	<section id="content" class="notReady">
-		<h3 id="title" class="center notReady">Subreddit</h3>
+		<div class="center notReady">
+			<img src="images/snoo-outlined.svg" />
+			<h3>Reddit Live</h3>
+		</div>
 		<div class="row notReady">
-			<div class="col-lg-8 col-lg-offset-2">
+			<div class="col-lg-2 col-lg-offset-5">
 				<div class="input-group">
 					<form class="form-inline input-group" id="subSelect">
 						<input type="text" class="form-control" name="sub" placeholder="Subreddit" />
@@ -29,6 +32,7 @@
 
 		<div class="row ready">
 			<div class="col-sm-5">
+				<h4 class="center"> <img src="images/snoo-outlined.svg" style="height: 30px; width: auto;" /> r/something </h4>
 				<div id="posts" data-sub=""></div>
 			</div>
 			<div class="col-sm-7" id="commentsContainer">
