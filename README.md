@@ -6,10 +6,10 @@ A simple Javascript application for live updating subreddit /new queues and comm
 
 ## Built with
 
-Uses SASS, Bootstrap, and jQuery
+jQuery
 
-Sends periodic AJAX requests to get information for given subreddit and selected comment thread. 
+Sends periodic AJAX requests to Reddit API to get information for given subreddit and selected comment thread. 
 
-Reddit rate-limits requests, so this project doesn't work when hosted online and used by multiple people at once. 
+Reddit rate-limits requests, so hosting on a server would require serious AJAX nerfing, which would make this useless.
 
-It requires no setup, so feel free to download and try it yourself!
+It requires no setup or permissions, so feel free to download and try it yourself!
