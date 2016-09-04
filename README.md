@@ -2,7 +2,7 @@
 
 A simple Javascript application for live updating subreddit /new queues and comment threads.
 
-![Screenshot](http://i.imgur.com/CD4aGLO.png)
+![Screenshot](http://i.imgur.com/Kewxzjf.png)
 
 ## Built with
 
