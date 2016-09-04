@@ -13,13 +13,15 @@ $(document).ready(function () {
     	e.preventDefault();
     	sub = $('input').val();
 		$('input').val('');
-		$('#content').removeClass('notReady').addClass('ready');
+		$('#titleBar h2').text('r/'+sub);
+		$('#welcome').addClass('hidden');
+		$('#content').removeClass('hidden');
 		orchestrator();
     });
 
-    $('html #settingsForm').on('submit', function(e){
-    	e.preventDefault();
-    })
+    // $('html #settingsForm').on('submit', function(e){
+    // 	e.preventDefault();
+    // })
 
     $(document).on('click', '.postLink', function(e){
     	e.preventDefault();
@@ -28,7 +30,7 @@ $(document).ready(function () {
     	activePost = $(this).children('.post').data('id');
     	$.each(posts, function(){
     		if(this.data.id == activePost){
-    			$('.activePost-title .link').attr('href', "http://www.reddit.com" + this.data.permalink);
+    			$('.activePost-title #postLink').attr('href', "http://www.reddit.com" + this.data.permalink);
 				$('.activePost-title .title').text(this.data.title);
 				$('.activePost-content').html(this.data.selftext_html);
 				$('#removeActive').removeClass('hidden');
@@ -119,9 +121,9 @@ function displayPosts(){
 			var flair = this.data.author_flair_text;
 			if (flair == null){ flair = ''; }
 			var html = '<a href="#" class="postLink">';
-			html += '<div class="post row" id="post-' + this.data.id + '" data-id="' + this.data.id + '"><div class="col-xs-1"><h1 class="score-big">' + this.data.score + '</h1><p class="comments-big">' + this.data.num_comments + '</p></div>';
-			html += '<div class="col-xs-11"><h4>' + this.data.title + '</h4>';
-			html += '</div></div></a>';
+			html += '<div class="post" id="post-' + this.data.id + '" data-id="' + this.data.id + '"><div class="postStats"><h1 class="score-big">' + this.data.score + '</h1><p class="comments-big">' + this.data.num_comments + '</p></div>';
+			html += '<h4 class="postTitle">' + this.data.title + '</h4>';
+			html += '</div></a>';
 			$('#posts').prepend(html);
 			$('#'+this.data.id).hide().fadeIn('slow');
 			playSound();
@@ -213,9 +215,9 @@ function displayComments(){
 function formatComment(comment){
 	var authorClass = "";
 	if(comment.author == OP){ authorClass = "label label-primary"; }
-	var html = '<div class="comment row" id="comment-' + comment.id + '">';
-	html += '<div class="media-left"><h1 id="score-' + comment.id + '" class="score-big">' + comment.score + '</h1></div>';
-	html += '<div class="media-body"><div class="meta">';
+	var html = '<div class="comment" id="comment-' + comment.id + '">';
+	html += '<span id="score-' + comment.id + '" class="score-big">' + comment.score + '</span>';
+	html += '<div class="content"><div class="meta">';
 	html += '<b class="' + authorClass + '">' + comment.author + '</b><span class="flair">' + flairHelper(comment.author_flair_text) + '</span></div>';
 	html += '<div class="body" id="body-' + comment.id + '">' + unescapeHTML(comment.body_html) + '</div><div id="comment-' + comment.id + '-replies"></div></div></div></div>';
 	return html;
