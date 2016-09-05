@@ -28,13 +28,20 @@
 		<div id="titleBar">
 			<img src="media/snoo-outlined.svg" />
 			<h2>r/something </h2>
+			<a href="#" id="mute"><i class="fa fa-bell-slash"></i></a>
 		</div>
 		<div id="posts" data-sub=""></div>
 	</div>
 	<div id="commentsContainer">
-		<h3 class="activePost-title"><a href="#" id="removeActive" class="hidden"><i class="fa fa-close"></i></a><a id="postLink" href="#" target="_blank"><span class="title">No post selected</span></a></h3>
-		<div class="meta hidden">posted by <b id="OP"></b><span id="OP-flair" class="flair"></span></div>
-		<p class="activePost-content"></p>
+		<a href="#" id="removeActive" class="hidden"><i class="fa fa-close"></i></a>
+		<h3 class="activePost-title"><a id="postLink" href="#" target="_blank"><span class="title">No post selected</span></a></h3>
+		<div class="meta hidden">posted by <b id="OP" class="OP"></b><span id="OP-flair" class="flair"></span></div>
+		<p class="activePost-content">
+			<form class="form-inline" id="threadSelect">
+				<input type="text" name="thread" placeholder="Thread URL" />
+				<button type="submit">Go!</button>
+			</form>
+		</p>
 		<div id="comments">
 		</div>
 	</div>

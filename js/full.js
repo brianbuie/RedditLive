@@ -4,39 +4,36 @@ var posts = [];
 var comments = [];
 var commentsSort = "top";
 var activePost = "";
+var activePostURL = "";
 var OP = "";
 var audioElement = document.createElement('audio');
+var sound = false;
 
 $(document).ready(function () {
 
     $('html #subSelect').on('submit', function(e){
     	e.preventDefault();
-    	sub = $('input').val();
-		$('input').val('');
+    	sub = $('#subSelect input[name="sub"]').val();
+		$('#subSelect input[name="sub"]').val('');
 		$('#titleBar h2').text('r/'+sub);
 		$('#welcome').addClass('hidden');
 		$('#content').removeClass('hidden');
 		orchestrator();
     });
 
-    // $('html #settingsForm').on('submit', function(e){
-    // 	e.preventDefault();
-    // })
+    $(document).on('submit', '#threadSelect', function(e){
+    	e.preventDefault();
+    	$('#threadSelect').hide();
+    	activePostURL = $('#threadSelect input[name="thread"]').val();
+		$('#threadSelect input[name="thread"]').val('');
+		getComments();
+    });
 
     $(document).on('click', '.postLink', function(e){
     	e.preventDefault();
     	cleanUpShop();
     	$(this).children('.post').addClass('active');
     	activePost = $(this).children('.post').data('id');
-    	$.each(posts, function(){
-    		if(this.data.id == activePost){
-    			$('.activePost-title #postLink').attr('href', "http://www.reddit.com" + this.data.permalink);
-				$('.activePost-title .title').text(this.data.title);
-				$('.activePost-content').html(this.data.selftext_html);
-				$('#removeActive').removeClass('hidden');
-				$('.meta').removeClass('hidden');
-    		}
-    	});
     	getComments();
     });
 
@@ -45,11 +42,23 @@ $(document).ready(function () {
     	cleanUpShop();
     });
 
+    $(document).on('click', '#mute', function(e){
+    	e.preventDefault();
+    	if (sound) {
+    		$('#mute i').removeClass('fa-bell').addClass('fa-bell-slash');
+    		sound = false;
+    	} else {
+    		$('#mute i').removeClass('fa-bell-slash').addClass('fa-bell');
+    		sound = true;
+    	}
+    });
+
 });
 
 function cleanUpShop(){
 	$('.post.active').removeClass('active');
 	activePost = "";
+	activePostURL = "";
 	comments = [];
 	$('#commentsContainer').html(blankPost);
 }
@@ -58,7 +67,7 @@ function orchestrator(){
 	if(sub != ''){
 		getPosts();	
 	}
-	if(activePost != ""){
+	if(activePost != "" || activePostURL != ""){
 		getComments();
 	}
 	setTimeout(orchestrator, 10000);
@@ -121,15 +130,17 @@ function displayPosts(){
 			var flair = this.data.author_flair_text;
 			if (flair == null){ flair = ''; }
 			var html = '<a href="#" class="postLink">';
-			html += '<div class="post" id="post-' + this.data.id + '" data-id="' + this.data.id + '"><div class="postStats"><h1 class="score-big">' + this.data.score + '</h1><p class="comments-big">' + this.data.num_comments + '</p></div>';
+			html += '<div class="post" id="post-' + this.data.id + '" data-id="' + this.data.id + '"><div class="postStats"><h1 class="score-big">' + scoreHelper(this.data.score) + '</h1><p class="comments-big">' + this.data.num_comments + '</p></div>';
 			html += '<h4 class="postTitle">' + this.data.title + '</h4>';
 			html += '</div></a>';
 			$('#posts').prepend(html);
 			$('#'+this.data.id).hide().fadeIn('slow');
 			playSound();
 		} else {
-			$('html #post-' + this.data.id + ' .score-big').text(this.data.score);
-			$('html #post-' + this.data.id + ' .comments-big').text(this.data.num_comments);
+			if(this.data.id != activePost && this.active){
+				$('html #post-' + this.data.id + ' .score-big').text(scoreHelper(this.data.score));
+				$('html #post-' + this.data.id + ' .comments-big').text(this.data.num_comments);
+			}
 		}
 		if (this.active == false){
 			$('#post-'+this.data.id).addClass('removed');
@@ -146,18 +157,33 @@ function displayPosts(){
 
 function getComments(){
 	var ajaxTime= new Date().getTime();
+	if(activePostURL == ""){
+		activePostURL = 'http://www.reddit.com/comments/' + activePost;
+	}
 	$.ajax({
 		type	: "GET",
-		url		: "http://www.reddit.com/r/" + sub + '/comments/' + activePost + '.json?sort=' + commentsSort + '&depth=5',
+		url		: activePostURL + '.json?sort=' + commentsSort + '&depth=5',
 	}).success(function(data){
 		var postInfo = data[0].data.children[0].data;
+		if(activePost == "" && activePostURL != ""){
+			activePost = postInfo.id;
+		}
 		if(postInfo.id == activePost){
-			$('.activePost-title .link').attr('href', "http://www.reddit.com" + postInfo.permalink);
+			$('#removeActive').removeClass('hidden');
+			$('.meta').removeClass('hidden');
+			$('html #threadSelect').addClass('hidden');
+			$('html #post-' + postInfo.id + ' .score-big').text(scoreHelper(postInfo.score));
+			$('html #post-' + postInfo.id + ' .comments-big').text(scoreHelper(postInfo.num_comments));
+			$('#postLink').attr('href', "http://www.reddit.com" + postInfo.permalink);
 			$('.activePost-title .title').text(postInfo.title);
 			$('#OP').text(postInfo.author);
 			OP = postInfo.author;
 			$('#OP-flair').text(flairHelper(postInfo.author_flair_text));
-			$('.activePost-content').html(unescapeHTML(postInfo.selftext_html));
+			if (postInfo.is_self){
+				$('.activePost-content').html(unescapeHTML(postInfo.selftext_html));
+			} else {
+				$('.activePost-content').html('<a href="'+postInfo.url+'" target="blank"><i class="fa fa-external-link"></i> '+postInfo.url+'</a>')
+			}
 			var rawComments = data[1].data.children;
 			rawComments.reverse();
 			$.each(rawComments, function(){
@@ -182,7 +208,7 @@ function getComments(){
 	}).done( function(){
 		var totalTime = new Date().getTime()-ajaxTime;
 	}).fail( function(){
-		$('#commentsContainer').addClass('error');
+		// $('#commentsContainer').addClass('error');
 	});
 }
 
@@ -204,7 +230,7 @@ function displayComments(){
 				ajaxObj.scrollTop(newPosition);
 			}
 		} else {
-			$('html #score-' + this.data.id).text(this.data.score);
+			$('html #score-' + this.data.id).text(scoreHelper(this.data.score));
 			$('html #body-' + this.data.id).html(unescapeHTML(this.data.body_html));
 		}
 		displayReplies(this.data);
@@ -214,9 +240,9 @@ function displayComments(){
 
 function formatComment(comment){
 	var authorClass = "";
-	if(comment.author == OP){ authorClass = "label label-primary"; }
+	if(comment.author == OP){ authorClass = "OP"; }
 	var html = '<div class="comment" id="comment-' + comment.id + '">';
-	html += '<span id="score-' + comment.id + '" class="score-big">' + comment.score + '</span>';
+	html += '<span id="score-' + comment.id + '" class="score-big">' + scoreHelper(comment.score) + '</span>';
 	html += '<div class="content"><div class="meta">';
 	html += '<b class="' + authorClass + '">' + comment.author + '</b><span class="flair">' + flairHelper(comment.author_flair_text) + '</span></div>';
 	html += '<div class="body" id="body-' + comment.id + '">' + unescapeHTML(comment.body_html) + '</div><div id="comment-' + comment.id + '-replies"></div></div></div></div>';
@@ -238,7 +264,7 @@ function displayReplies(comment){
 				if($('#comment-'+this.data.id).length < 1){
 					$(replySpot).append(formatComment(this.data));
 				} else {
-					$('html #score-' + this.data.id).text(this.data.score);
+					$('html #score-' + this.data.id).text(scoreHelper(this.data.score));
 					$('html #body-' + this.data.id).html(unescapeHTML(this.data.body_html));
 				}
 				displayReplies(this.data);
@@ -252,12 +278,24 @@ function flairHelper(flair){
 	return flair;
 }
 
+function scoreHelper(score){
+	scoreNum = parseInt(score);
+	newScore = scoreNum;
+	if(scoreNum > 1000){
+		tempScore = scoreNum/1000;
+		newScore = tempScore.toFixed(1) + 'k';
+	}
+	return newScore;
+}
+
 function playSound(){
 	// todo: check settings to see if sound is enabled
-	if (!audioElement.src){
-		audioElement.setAttribute('src', 'media/notification.mp3');
-    	audioElement.setAttribute('autoplay', 'false');
-	} else {
-		audioElement.play();
+	if (sound){
+		if (!audioElement.src){
+			audioElement.setAttribute('src', 'media/notification.mp3');
+	    	audioElement.setAttribute('autoplay', 'false');
+		} else {
+			audioElement.play();
+		}
 	}
 }

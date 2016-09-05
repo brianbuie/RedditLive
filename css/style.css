@@ -10,17 +10,21 @@ body{
 	color: #555;
 }
 
+strong{
+	font-weight: bold;
+}
+
 h1, h2, h3, h4{
 	font-weight: bold;
 	margin: 20px 0 10px 0;
 }
 
 h1{
-	font-size: 24px;
+	font-size: 22px;
 }
 
 h2{
-	font-size: 22px;
+	font-size: 20px;
 }
 
 h3{
@@ -63,7 +67,6 @@ a:focus, button:focus, input:focus{
 }
 
 
-
 /* WELCOME SCREEN */
 
 #welcome{
@@ -71,27 +74,32 @@ a:focus, button:focus, input:focus{
 	margin: 0 auto;
 }
 
-#subSelect{
+.form-inline{
 	width: 90%;
 	margin: 0 auto;
 	display: flex;
 }
 
-#subSelect input[type="text"], #subSelect button{
+#threadSelect{
+	width: 80%;
+	margin: 0 0;
+}
+
+.form-inline input[type="text"], .form-inline button{
 	padding: 10px;
 	font-size: 16px;
 }
 
-#subSelect input[type="text"]{
+.form-inline input[type="text"]{
 	flex-grow: 1;
 }
 
-#subSelect button{
+.form-inline button{
 	
 }
 
 
-
+/* MAIN CONTENT */
 
 #content{
 	display: flex;
@@ -111,9 +119,16 @@ a:focus, button:focus, input:focus{
 #titleBar h2{
 	margin: 0 0 0 10px;
 	font-weight: normal;
+	flex-grow: 1;
 }
 
-/* POSTS MENU */
+#mute{
+	color: #555;
+}
+
+
+
+/* POSTS COLUMN */
 
 #postsContainer{
 	width: 40%;
@@ -121,23 +136,21 @@ a:focus, button:focus, input:focus{
 	flex-grow: 0;
 }
 
-/* single post */
 #posts .post{
 	display: flex;
 	align-items: center;
-	padding: 10px;
+	padding: 10px 5px;
 	margin: 10px;
-	background: #fff;
+	background: #fcfcfc;
 }
 
 #posts .postLink{
 	color: inherit;
 }
 
-/* left hand stats */
 .postStats{
 	text-align: center;
-	width: 10%;
+	width: 13%;
 }
 
 .postStats h1{
@@ -148,18 +161,17 @@ a:focus, button:focus, input:focus{
 	font-size: 14px;
 }
 
-/* post title */
 #posts .post .postTitle{
 	margin: 0;
-	width: 90%;
+	width: 87%;
 	font-weight: normal;
 }
 
 #posts .post.active{
 	/* box-sizing: border-box; */
-	margin: 10px 0 10px 5px;
-	padding: 10px 10px 10px 10px;
-	box-shadow: -5px 0 3px 3px rgba(0,0,0,0.3);
+	margin: 10px 0 10px 10px;
+	padding: 10px 10px 10px 0;
+	/* box-shadow: -5px 0 3px 3px rgba(0,0,0,0.3); */
 	border-color: #F73906;
 	border-style: solid;
 	border-width: 0 0 0 5px;
@@ -171,32 +183,32 @@ a:focus, button:focus, input:focus{
 }
 
 #posts .post.removed{
-	background-color: transparent;
+	opacity: 0.4;
 }
 
-#posts .post.removed .postStats{
-	display: none;
+#posts .post.removed.active{
+	opacity: 1;
 }
 
-#posts .post.removed .postTitle{
-	font-size: 12px;
-	color: #888;
-}
+
 
 
 /* COMMENTS */
 
 #commentsContainer{
 	width: 60%;
-	padding: 0 20px;
+	padding: 0 0 0 20px;
+}
+
+.activePost-title{
+	padding-right: 25px;
 }
 
 .activePost-title .title{
-	padding-right: 10px;
 	color: #555;
 }
 
-.activePost-title #removeActive{
+#removeActive{
 	position: absolute;
 	top: 20px;
 	right: 5px;
@@ -209,11 +221,15 @@ a:focus, button:focus, input:focus{
 
 .comment{
 	display: flex !important;
-	padding: 10px 0 10px 10px;
-	margin: 15px 0;
+	padding: 10px 10px;
+	margin: 0;
 	border-style: solid;
 	border-color: #ccc;
-	border-width: 3px 0 3px 3px;
+	border-width: 0 0 0 2px;
+}
+
+.comment .body{
+	margin: 0 0 10px 0;
 }
 
 /* .comment .comment{
@@ -233,6 +249,8 @@ a:focus, button:focus, input:focus{
 
 .meta{
 	margin-bottom: 5px;
+	display: flex;
+	align-items: center;
 }
 
 /* username */
@@ -240,12 +258,18 @@ a:focus, button:focus, input:focus{
 	font-weight: bold;
 }
 
-.meta .flair{
+.OP{
+	background-color: #0055DF;
+	color: #fff;
+	border-radius: 4px;
+	font-size: 80%;
+	padding: 2px 5px;
 	margin-left: 5px;
-	font-size: 12px;
-	padding: 2px 0;
-	background-color: #ddd;
-	position: relative;
-	bottom: 2px;
+}
+
+.meta .flair{
+	margin-left: 10px;
+	font-size: 70%;
+	color: #888;
 }
 
